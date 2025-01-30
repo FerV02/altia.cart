@@ -1,4 +1,4 @@
-package altia.cart.demo;
+package altia.cars.demo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
