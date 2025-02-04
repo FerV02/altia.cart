@@ -24,7 +24,7 @@ public class CarEntity {
     @Column(name = "car_price")
     private BigDecimal carPrice;
 
-    @Column(name = "car_available", nullable = false)
+    @Column(name = "car_available")
     private boolean carAvailable;
 
     public CarEntity () {}
