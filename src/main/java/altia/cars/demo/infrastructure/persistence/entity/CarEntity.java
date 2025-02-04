@@ -1,12 +1,12 @@
 package altia.cars.demo.infrastructure.persistence.entity;
 
+
 import jakarta.persistence.*;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "Cars")
+@Table(name = "cars")
 public class CarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
