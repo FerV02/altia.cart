@@ -12,18 +12,19 @@ public class CarEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "car_name")
     private String carName;
 
-    @Column(nullable = false)
+    @Column(name = "car_model")
     private String carModel;
 
+    @Column(name = "car_description")
     private String carDescription;
 
-    @Column(nullable = false)
+    @Column(name = "car_price")
     private BigDecimal carPrice;
 
-    @Column(nullable = false)
+    @Column(name = "car_available", nullable = false)
     private boolean carAvailable;
 
     public CarEntity () {}
