@@ -4,10 +4,14 @@ import altia.cars.demo.application.ports.in.CarServicePort;
 import altia.cars.demo.domain.model.Car;
 import altia.cars.demo.infrastructure.rest.request.CarRequest;
 import altia.cars.demo.infrastructure.rest.response.CarResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -117,6 +121,42 @@ public class CarRestAdapter {
                         car.isCarAvailable()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(carResponses);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Page<CarResponse>> findByCriteria(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String model,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Car> cars = servicePort.findByCriteria(name, model, minPrice, maxPrice, pageable);
+
+        Page<CarResponse> carResponses = cars.map(car -> new CarResponse(
+                car.getId(),
+                car.getCarName(),
+                car.getCarModel(),
+                car.getCarDescription(),
+                car.getCarPrice(),
+                car.isCarAvailable()));
+
+        return ResponseEntity.ok(carResponses);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CarResponse> getCarById(@PathVariable Long id) {
+        Optional<Car> car = servicePort.getCarById(id);
+        return car.map(value -> ResponseEntity.ok(new CarResponse(
+                        value.getId(),
+                        value.getCarName(),
+                        value.getCarModel(),
+                        value.getCarDescription(),
+                        value.getCarPrice(),
+                        value.isCarAvailable())))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
 

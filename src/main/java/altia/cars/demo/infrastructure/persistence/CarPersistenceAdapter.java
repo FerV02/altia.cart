@@ -5,8 +5,11 @@ import altia.cars.demo.domain.model.Car;
 import altia.cars.demo.infrastructure.persistence.entity.CarEntity;
 import altia.cars.demo.infrastructure.persistence.mapper.CarPersistenceMapper;
 import altia.cars.demo.infrastructure.persistence.repository.CarRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,4 +74,14 @@ public class CarPersistenceAdapter implements CarRepositoryPort {
         return carRepository.deleteByCarModel(model) != null;
     }
 
+    @Override
+    public Page<Car> findByCriteria(String name, String model, Double minPrice, Double maxPrice, Pageable pageable) {
+        Page<CarEntity> carEntities = carRepository.findByCriteria(name, model, minPrice, maxPrice, pageable);
+        return carEntities.map(carPersistenceMapper::toDomain);
+    }
+
+    @Override
+    public Optional<Car> findCarById(Long id) {
+        return carRepository.findById(id).map(carPersistenceMapper::toDomain);
+    }
 }

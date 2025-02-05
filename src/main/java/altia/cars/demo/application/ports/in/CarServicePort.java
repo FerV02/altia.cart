@@ -1,6 +1,8 @@
 package altia.cars.demo.application.ports.in;
 
 import altia.cars.demo.domain.model.Car;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface CarServicePort {
     List<Car> getMostExpensiveCars();
     boolean deleteCarsByModel(String model);
     long countAvailableCars();
+    Page<Car> findByCriteria(String name, String model, Double minPrice, Double maxPrice, Pageable pageable);
+    Optional<Car> getCarById(Long id);
 }
