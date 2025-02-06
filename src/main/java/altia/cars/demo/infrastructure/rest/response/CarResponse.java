@@ -13,7 +13,7 @@ public class CarResponse {
 
     public CarResponse() {}
 
-    public CarResponse(Long id, String carName, String carModel, String carDescription, BigDecimal carPrice, boolean carAvailable) {
+    public CarResponse(Long id, String carName, String carModel, String carDescription, BigDecimal carPrice, Boolean carAvailable) {
         this.id = id;
         this.carName = carName;
         this.carModel = carModel;
