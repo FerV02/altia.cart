@@ -15,8 +15,10 @@ public interface CarServicePort {
     List<Car> getCarsByModel(String model);
     Car addCar(Car car);
     List<Car> getMostExpensiveCars();
-    boolean deleteCarsByModel(String model);
+    Boolean deleteCarsByModel(String model);
     long countAvailableCars();
     Page<Car> findByCriteria(String name, String model, Double minPrice, Double maxPrice, Pageable pageable);
     Optional<Car> getCarById(Long id);
+    Optional<Car> updateCar(Long id, Car car);
+
 }

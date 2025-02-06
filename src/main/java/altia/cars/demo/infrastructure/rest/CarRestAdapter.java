@@ -71,7 +71,7 @@ public class CarRestAdapter {
 
     @DeleteMapping("/model/{model}")
     public ResponseEntity<String> deleteCarsByModel(@PathVariable String model) {
-        boolean deleted = servicePort.deleteCarsByModel(model);
+        Boolean deleted = servicePort.deleteCarsByModel(model);
         if (deleted) {
             return ResponseEntity.ok("Modelo Eliminado");
         } else {
@@ -158,5 +158,33 @@ public class CarRestAdapter {
                         value.isCarAvailable())))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CarResponse> updateCar(@PathVariable Long id, @RequestBody CarRequest carRequest) {
+
+        Car car = new Car(
+                id,
+                carRequest.getCarName(),
+                carRequest.getCarModel(),
+                carRequest.getCarDescription(),
+                carRequest.getCarPrice(),
+                carRequest.isCarAvailable()
+        );
+
+
+        return servicePort.updateCar(id, car).map(updatedCar ->
+                        new CarResponse(
+                                updatedCar.getId(),
+                                updatedCar.getCarName(),
+                                updatedCar.getCarModel(),
+                                updatedCar.getCarDescription(),
+                                updatedCar.getCarPrice(),
+                                updatedCar.isCarAvailable()
+                        )
+                ).map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
 

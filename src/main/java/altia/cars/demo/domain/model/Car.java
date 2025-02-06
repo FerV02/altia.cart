@@ -8,10 +8,10 @@ public class Car {
     private String carModel;
     private String carDescription;
     private BigDecimal carPrice;
-    private boolean carAvailable;
+    private Boolean carAvailable;
 
 
-    public Car(Long id, String carName, String carModel, String carDescription, BigDecimal carPrice, boolean carAvailable) {
+    public Car(Long id, String carName, String carModel, String carDescription, BigDecimal carPrice, Boolean carAvailable) {
         this.id = id;
         this.carName = carName;
         this.carModel = carModel;
@@ -40,12 +40,17 @@ public class Car {
         return carPrice;
     }
 
-    public boolean isCarAvailable() {
+    public Boolean isCarAvailable() {
         return carAvailable;
     }
 
+    public Boolean getCarAvailable() {
+        return carAvailable;
+    }
 
-
+    public void setCarAvailable(Boolean carAvailable) {
+        this.carAvailable = carAvailable;
+    }
 
 }
 

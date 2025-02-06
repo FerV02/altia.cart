@@ -25,7 +25,7 @@ public class CarEntity {
     private BigDecimal carPrice;
 
     @Column(name = "car_available")
-    private boolean carAvailable;
+    private Boolean carAvailable;
 
     public CarEntity () {}
 
@@ -79,11 +79,15 @@ public class CarEntity {
         this.carPrice = carPrice;
     }
 
-    public boolean isCarAvailable() {
+    public Boolean isCarAvailable() {
         return carAvailable;
     }
 
-    public void setCarAvailable(boolean carAvailable) {
+    public Boolean getCarAvailable() {
+        return carAvailable;
+    }
+
+    public void setCarAvailable(Boolean carAvailable) {
         this.carAvailable = carAvailable;
     }
 

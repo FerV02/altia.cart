@@ -8,9 +8,8 @@ public class CarRequest {
     private String carModel;
     private String carDescription;
     private BigDecimal carPrice;
-    private boolean carAvailable;
+    private Boolean carAvailable;
 
-    // Getters y Setters
     public String getCarName() {
         return carName;
     }
@@ -43,11 +42,11 @@ public class CarRequest {
         this.carPrice = carPrice;
     }
 
-    public boolean isCarAvailable() {
+    public Boolean isCarAvailable() {
         return carAvailable;
     }
 
-    public void setCarAvailable(boolean carAvailable) {
+    public void setCarAvailable(Boolean carAvailable) {
         this.carAvailable = carAvailable;
     }
 }

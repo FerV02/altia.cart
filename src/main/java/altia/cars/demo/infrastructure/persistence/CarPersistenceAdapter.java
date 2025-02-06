@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +69,7 @@ public class CarPersistenceAdapter implements CarRepositoryPort {
     }
 
     @Override
-    public boolean deleteByCarModel(String model) {
+    public Boolean deleteByCarModel(String model) {
         return carRepository.deleteByCarModel(model) != null;
     }
 
@@ -84,4 +83,29 @@ public class CarPersistenceAdapter implements CarRepositoryPort {
     public Optional<Car> findCarById(Long id) {
         return carRepository.findById(id).map(carPersistenceMapper::toDomain);
     }
+
+    @Override
+    public Optional<Car> updateCar(Long id, Car car) {
+        return carRepository.findById(id).map(existingCarEntity -> {
+            if (car.getCarName() != null) {
+                existingCarEntity.setCarName(car.getCarName());
+            }
+            if (car.getCarModel() != null) {
+                existingCarEntity.setCarModel(car.getCarModel());
+            }
+            if (car.getCarDescription() != null) {
+                existingCarEntity.setCarDescription(car.getCarDescription());
+            }
+            if (car.getCarPrice() != null) {
+                existingCarEntity.setCarPrice(car.getCarPrice());
+            }
+            if (car.getCarAvailable() != null) {
+                existingCarEntity.setCarAvailable(car.getCarAvailable());
+            }
+
+            CarEntity savedCarEntity = carRepository.save(existingCarEntity);
+            return carPersistenceMapper.toDomain(savedCarEntity);
+        });
+    }
+
 }

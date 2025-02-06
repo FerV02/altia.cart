@@ -15,8 +15,9 @@ public interface CarRepositoryPort {
     Car save(Car car);
     long countAvailableCars();
     List<Car> findAvailableCars();
-    boolean deleteByCarModel(String model);
+    Boolean deleteByCarModel(String model);
     Page<Car> findByCriteria(String name, String model, Double minPrice, Double maxPrice, Pageable pageable);
     Optional<Car> findCarById(Long id);
+    Optional<Car> updateCar(Long id, Car car);
 
 }

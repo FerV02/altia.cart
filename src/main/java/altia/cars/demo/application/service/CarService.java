@@ -50,7 +50,7 @@ public class CarService implements CarServicePort {
     }
 
     @Override
-    public boolean deleteCarsByModel(String model) {
+    public Boolean deleteCarsByModel(String model) {
         return carRepositoryPort.deleteByCarModel(model);
     }
 
@@ -62,6 +62,10 @@ public class CarService implements CarServicePort {
     @Override
     public Optional<Car> getCarById(Long id) {
         return carRepositoryPort.findCarById(id);
+    }
+    @Override
+    public Optional<Car> updateCar(Long id, Car car) {
+        return carRepositoryPort.updateCar(id, car);
     }
 }
 
