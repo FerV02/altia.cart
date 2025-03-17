@@ -18,5 +18,6 @@ public interface CarRepositoryPort {
     Optional<Car> findCarById(Long id);
     Optional<Car> updateCar(Long id, Car car);
     Boolean deleteByCarIds(List<Long> ids);
+    List<Car> findAllCars();
 
 }

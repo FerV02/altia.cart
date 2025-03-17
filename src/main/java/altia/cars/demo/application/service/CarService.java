@@ -3,6 +3,7 @@ package altia.cars.demo.application.service;
 import altia.cars.demo.application.ports.in.CarServicePort;
 import altia.cars.demo.application.ports.out.CarRepositoryPort;
 import altia.cars.demo.domain.model.Car;
+import altia.cars.demo.domain.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,10 @@ public class CarService implements CarServicePort {
     @Override
     public Boolean deleteCarsByIds(List<Long> ids) {
         return carRepositoryPort.deleteByCarIds(ids);
+    }
+    @Override
+    public List<Car> findAllCars() {
+        return carRepositoryPort.findAllCars();
     }
 }
 

@@ -1,6 +1,7 @@
 package altia.cars.demo.application.ports.in;
 
 import altia.cars.demo.domain.model.Car;
+import altia.cars.demo.domain.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,5 +19,6 @@ public interface CarServicePort {
     Optional<Car> getCarById(Long id);
     Optional<Car> updateCar(Long id, Car car);
     Boolean deleteCarsByIds(List<Long> ids);
+    List<Car> findAllCars();
 
 }

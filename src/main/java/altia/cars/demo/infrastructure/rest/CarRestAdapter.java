@@ -105,6 +105,15 @@ public class CarRestAdapter {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
+    @GetMapping
+    public ResponseEntity<List<CarResponse>> findAllCars() {
+        List<Car> cars = servicePort.findAllCars();
+        List<CarResponse> responses = cars.stream()
+                .map(CarResponse::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<CarResponse> updateCar(@PathVariable Long id, @RequestBody CarRequest carRequest) {

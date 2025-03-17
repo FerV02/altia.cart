@@ -2,6 +2,7 @@ package altia.cars.demo.infrastructure.persistence;
 
 import altia.cars.demo.application.ports.out.CarRepositoryPort;
 import altia.cars.demo.domain.model.Car;
+import altia.cars.demo.domain.model.User;
 import altia.cars.demo.infrastructure.persistence.entity.CarEntity;
 import altia.cars.demo.infrastructure.persistence.mapper.CarPersistenceMapper;
 import altia.cars.demo.infrastructure.persistence.repository.CarRepository;
@@ -98,6 +99,18 @@ public class CarPersistenceAdapter implements CarRepositoryPort {
             return carRepository.findById(id).map(carPersistenceMapper::toDomain);
         } catch (Exception e) {
             throw new PersistenceException("Error finding car by ID", e);
+        }
+    }
+
+    @Override
+    public List<Car> findAllCars() {
+        try {
+            return carRepository.findAll()
+                    .stream()
+                    .map(carPersistenceMapper::toDomain)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new PersistenceException("Error finding all cars", e);
         }
     }
 
