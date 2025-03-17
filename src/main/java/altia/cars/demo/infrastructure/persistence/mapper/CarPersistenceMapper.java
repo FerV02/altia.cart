@@ -14,11 +14,10 @@ public class CarPersistenceMapper {
 
         return new Car(
                 carEntity.getId(),
-                carEntity.getCarName(),
+                carEntity.getCarBrand(),
                 carEntity.getCarModel(),
-                carEntity.getCarDescription(),
-                carEntity.getCarPrice(),
-                carEntity.isCarAvailable()
+                carEntity.getCarYear(),
+                carEntity.getCarDescription()
         );
     }
 
@@ -29,11 +28,10 @@ public class CarPersistenceMapper {
 
         CarEntity carEntity = new CarEntity();
         carEntity.setId(car.getId());
-        carEntity.setCarName(car.getCarName());
+        carEntity.setCarBrand(car.getCarBrand());
         carEntity.setCarModel(car.getCarModel());
+        carEntity.setCarYear(car.getCarYear());
         carEntity.setCarDescription(car.getCarDescription());
-        carEntity.setCarPrice(car.getCarPrice());
-        carEntity.setCarAvailable(car.isCarAvailable());
         return carEntity;
     }
 }

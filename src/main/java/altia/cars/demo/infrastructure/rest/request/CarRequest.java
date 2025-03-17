@@ -1,21 +1,19 @@
 package altia.cars.demo.infrastructure.rest.request;
 
-import java.math.BigDecimal;
-
 public class CarRequest {
 
-    private String carName;
+    private String carBrand;
     private String carModel;
+    private Integer carYear;
     private String carDescription;
-    private BigDecimal carPrice;
-    private Boolean carAvailable;
 
-    public String getCarName() {
-        return carName;
+
+    public String getCarBrand() {
+        return carBrand;
     }
 
-    public void setCarName(String carName) {
-        this.carName = carName;
+    public void setCarBrand(String carBrand) {
+        this.carBrand = carBrand;
     }
 
     public String getCarModel() {
@@ -26,27 +24,19 @@ public class CarRequest {
         this.carModel = carModel;
     }
 
+    public Integer  getCarYear() {
+        return carYear;
+    }
+
+    public void setCarYear(Integer carYear) {
+        this.carYear = carYear;
+    }
+
     public String getCarDescription() {
         return carDescription;
     }
 
     public void setCarDescription(String carDescription) {
         this.carDescription = carDescription;
-    }
-
-    public BigDecimal getCarPrice() {
-        return carPrice;
-    }
-
-    public void setCarPrice(BigDecimal carPrice) {
-        this.carPrice = carPrice;
-    }
-
-    public Boolean isCarAvailable() {
-        return carAvailable;
-    }
-
-    public void setCarAvailable(Boolean carAvailable) {
-        this.carAvailable = carAvailable;
     }
 }

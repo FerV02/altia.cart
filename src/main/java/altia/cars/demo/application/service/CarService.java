@@ -25,8 +25,8 @@ public class CarService implements CarServicePort {
     }
 
     @Override
-    public List<Car> getCarsByName(String name) {
-        return carRepositoryPort.findByCarName(name);
+    public List<Car> getCarsByBrand(String brand) {
+        return carRepositoryPort.findByCarBrand(brand);
     }
 
     @Override
@@ -35,18 +35,8 @@ public class CarService implements CarServicePort {
     }
 
     @Override
-    public List<Car> getMostExpensiveCars() {
-        return carRepositoryPort.findMostExpensiveCars();
-    }
-
-    @Override
-    public long countAvailableCars() {
-        return carRepositoryPort.countAvailableCars();
-    }
-
-    @Override
-    public List<Car> getAvailableCars() {
-        return carRepositoryPort.findAvailableCars();
+    public List<Car> getCarsByYear(Integer year) {
+        return carRepositoryPort.findByCarYear(year);
     }
 
     @Override
@@ -55,8 +45,8 @@ public class CarService implements CarServicePort {
     }
 
     @Override
-    public Page<Car> findByCriteria(String name, String model, Double minPrice, Double maxPrice, Pageable pageable) {
-        return carRepositoryPort.findByCriteria(name, model, minPrice, maxPrice, pageable);
+    public Page<Car> findByCriteria(String name, String model, Integer year, Pageable pageable) {
+        return carRepositoryPort.findByCriteria(name, model, year, pageable);
     }
 
     @Override
@@ -66,6 +56,11 @@ public class CarService implements CarServicePort {
     @Override
     public Optional<Car> updateCar(Long id, Car car) {
         return carRepositoryPort.updateCar(id, car);
+    }
+
+    @Override
+    public Boolean deleteCarsByIds(List<Long> ids) {
+        return carRepositoryPort.deleteByCarIds(ids);
     }
 }
 

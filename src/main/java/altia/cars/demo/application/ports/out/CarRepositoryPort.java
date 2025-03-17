@@ -9,15 +9,14 @@ import java.util.Optional;
 
 public interface CarRepositoryPort {
 
-    List<Car> findByCarName(String name);
+    List<Car> findByCarBrand(String brand);
     List<Car> findByCarModel(String model);
-    List<Car> findMostExpensiveCars();
+    List<Car> findByCarYear(Integer year);
     Car save(Car car);
-    long countAvailableCars();
-    List<Car> findAvailableCars();
     Boolean deleteByCarModel(String model);
-    Page<Car> findByCriteria(String name, String model, Double minPrice, Double maxPrice, Pageable pageable);
+    Page<Car> findByCriteria(String name, String model, Integer year, Pageable pageable);
     Optional<Car> findCarById(Long id);
     Optional<Car> updateCar(Long id, Car car);
+    Boolean deleteByCarIds(List<Long> ids);
 
 }

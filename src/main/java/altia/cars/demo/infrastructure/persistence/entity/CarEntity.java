@@ -3,7 +3,7 @@ package altia.cars.demo.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "cars")
@@ -12,31 +12,30 @@ public class CarEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "car_name")
-    private String carName;
+    @Column(name = "car_brand")
+    private String carBrand;
 
     @Column(name = "car_model")
     private String carModel;
 
+    @Column(name = "car_year")
+    private Integer carYear;
+
     @Column(name = "car_description")
     private String carDescription;
 
-    @Column(name = "car_price")
-    private BigDecimal carPrice;
-
-    @Column(name = "car_available")
-    private Boolean carAvailable;
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ListingEntity> listings;
 
     public CarEntity () {}
 
 
-    public CarEntity(Long id, String carName, String carModel, String carDescription, BigDecimal carPrice, boolean carAvailable) {
+    public CarEntity(Long id, String carBrand, String carModel, Integer carYear, String carDescription) {
         this.id = id;
-        this.carName = carName;
+        this.carBrand = carBrand;
         this.carModel = carModel;
+        this.carYear = carYear;
         this.carDescription = carDescription;
-        this.carPrice = carPrice;
-        this.carAvailable = carAvailable;
     }
 
     public Long getId() {
@@ -47,12 +46,12 @@ public class CarEntity {
         this.id = id;
     }
 
-    public String getCarName() {
-        return carName;
+    public String getCarBrand() {
+        return carBrand;
     }
 
-    public void setCarName(String carName) {
-        this.carName = carName;
+    public void setCarBrand(String carBrand) {
+        this.carBrand = carBrand;
     }
 
     public String getCarModel() {
@@ -63,6 +62,14 @@ public class CarEntity {
         this.carModel = carModel;
     }
 
+    public Integer getCarYear() {
+        return carYear;
+    }
+
+    public void setCarYear(Integer carYear) {
+        this.carYear = carYear;
+    }
+
     public String getCarDescription() {
         return carDescription;
     }
@@ -70,25 +77,4 @@ public class CarEntity {
     public void setCarDescription(String carDescription) {
         this.carDescription = carDescription;
     }
-
-    public BigDecimal getCarPrice() {
-        return carPrice;
-    }
-
-    public void setCarPrice(BigDecimal carPrice) {
-        this.carPrice = carPrice;
-    }
-
-    public Boolean isCarAvailable() {
-        return carAvailable;
-    }
-
-    public Boolean getCarAvailable() {
-        return carAvailable;
-    }
-
-    public void setCarAvailable(Boolean carAvailable) {
-        this.carAvailable = carAvailable;
-    }
-
 }

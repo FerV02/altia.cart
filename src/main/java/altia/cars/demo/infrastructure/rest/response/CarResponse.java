@@ -1,25 +1,29 @@
 package altia.cars.demo.infrastructure.rest.response;
 
-import java.math.BigDecimal;
+import altia.cars.demo.domain.model.Car;
 
 public class CarResponse {
 
     private Long id;
-    private String carName;
+    private String carBrand;
     private String carModel;
+    private Integer carYear;
     private String carDescription;
-    private BigDecimal carPrice;
-    private Boolean carAvailable;
 
-    public CarResponse() {}
+    public CarResponse(Car car) {
+        this.id = car.getId();
+        this.carBrand = car.getCarBrand();
+        this.carModel = car.getCarModel();
+        this.carYear = car.getCarYear();
+        this.carDescription = car.getCarDescription();
+    }
 
-    public CarResponse(Long id, String carName, String carModel, String carDescription, BigDecimal carPrice, Boolean carAvailable) {
+    public CarResponse(Long id, String carBrand, String carModel, Integer carYear, String carDescription) {
         this.id = id;
-        this.carName = carName;
+        this.carBrand = carBrand;
         this.carModel = carModel;
+        this.carYear = carYear;
         this.carDescription = carDescription;
-        this.carPrice = carPrice;
-        this.carAvailable = carAvailable;
     }
 
     public Long getId() {
@@ -30,12 +34,12 @@ public class CarResponse {
         this.id = id;
     }
 
-    public String getCarName() {
-        return carName;
+    public String getcarBrand() {
+        return carBrand;
     }
 
-    public void setCarName(String carName) {
-        this.carName = carName;
+    public void setcarBrand(String carBrand) {
+        this.carBrand = carBrand;
     }
 
     public String getCarModel() {
@@ -46,27 +50,19 @@ public class CarResponse {
         this.carModel = carModel;
     }
 
+    public Integer getCarYear() {
+        return carYear;
+    }
+
+    public void setCarYear(Integer carYear) {
+        this.carYear = carYear;
+    }
+
     public String getCarDescription() {
         return carDescription;
     }
 
     public void setCarDescription(String carDescription) {
         this.carDescription = carDescription;
-    }
-
-    public BigDecimal getCarPrice() {
-        return carPrice;
-    }
-
-    public void setCarPrice(BigDecimal carPrice) {
-        this.carPrice = carPrice;
-    }
-
-    public Boolean isCarAvailable() {
-        return carAvailable;
-    }
-
-    public void setCarAvailable(Boolean carAvailable) {
-        this.carAvailable = carAvailable;
     }
 }

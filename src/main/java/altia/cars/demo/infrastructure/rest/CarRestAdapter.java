@@ -4,6 +4,7 @@ import altia.cars.demo.application.ports.in.CarServicePort;
 import altia.cars.demo.domain.model.Car;
 import altia.cars.demo.infrastructure.rest.request.CarRequest;
 import altia.cars.demo.infrastructure.rest.response.CarResponse;
+import jakarta.persistence.PersistenceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,50 +24,37 @@ public class CarRestAdapter {
         this.servicePort = servicePort;
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<List<CarResponse>> getCarsByName(@PathVariable String name) {
-        List<Car> cars = servicePort.getCarsByName(name);
-        List<CarResponse> carResponses = cars.stream()
-                .map(car -> new CarResponse(
-                        car.getId(),
-                        car.getCarName(),
-                        car.getCarModel(),
-                        car.getCarDescription(),
-                        car.getCarPrice(),
-                        car.isCarAvailable()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(carResponses);
+    @GetMapping("/brand/{brand}")
+    public ResponseEntity<List<CarResponse>> getCarsByBrand(@PathVariable String brand) {
+        try {
+            List<Car> cars = servicePort.getCarsByBrand(brand);
+            List<CarResponse> carResponses = cars.stream()
+                    .map(CarResponse::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(carResponses);
+        } catch (PersistenceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/model/{model}")
     public ResponseEntity<List<CarResponse>> getCarsByModel(@PathVariable String model) {
         List<Car> cars = servicePort.getCarsByModel(model);
         List<CarResponse> carResponses = cars.stream()
-                .map(car -> new CarResponse(
-                        car.getId(),
-                        car.getCarName(),
-                        car.getCarModel(),
-                        car.getCarDescription(),
-                        car.getCarPrice(),
-                        car.isCarAvailable()))
+                .map(CarResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(carResponses);
     }
 
-    @GetMapping("/expensive")
-    public ResponseEntity<List<CarResponse>> getMostExpensiveCars() {
-        List<Car> cars = servicePort.getMostExpensiveCars();
+    @GetMapping("/year/{year}")
+    public ResponseEntity<List<CarResponse>> getCarsByYear (@PathVariable Integer year) {
+        List<Car> cars = servicePort.getCarsByYear(year);
         List<CarResponse> carResponses = cars.stream()
-                .map(car -> new CarResponse(
-                        car.getId(),
-                        car.getCarName(),
-                        car.getCarModel(),
-                        car.getCarDescription(),
-                        car.getCarPrice(),
-                        car.isCarAvailable()))
+                .map(CarResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(carResponses);
     }
+
 
     @DeleteMapping("/model/{model}")
     public ResponseEntity<String> deleteCarsByModel(@PathVariable String model) {
@@ -79,112 +66,71 @@ public class CarRestAdapter {
         }
     }
 
-
-    @GetMapping("/available/count")
-    public ResponseEntity<Long> countAvailableCars() {
-        long count = servicePort.countAvailableCars();
-        return ResponseEntity.ok(count);
-    }
-
     @PostMapping
     public ResponseEntity<CarResponse> createCar(@RequestBody CarRequest carRequest) {
         Car newCar = new Car(
                 null,
-                carRequest.getCarName(),
+                carRequest.getCarBrand(),
                 carRequest.getCarModel(),
-                carRequest.getCarDescription(),
-                carRequest.getCarPrice(),
-                carRequest.isCarAvailable()
+                carRequest.getCarYear(),
+                carRequest.getCarDescription()
         );
 
         Car createdCar = servicePort.addCar(newCar);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new CarResponse(
-                createdCar.getId(),
-                createdCar.getCarName(),
-                createdCar.getCarModel(),
-                createdCar.getCarDescription(),
-                createdCar.getCarPrice(),
-                createdCar.isCarAvailable()
-        ));
+        CarResponse carResponse = new CarResponse(createdCar);
+        return ResponseEntity.status(HttpStatus.CREATED).body(carResponse);
     }
 
-    @GetMapping("/available")
-    public ResponseEntity<List<CarResponse>> getAvailableCars() {
-        List<Car> cars = servicePort.getAvailableCars();
-        List<CarResponse> carResponses = cars.stream()
-                .map(car -> new CarResponse(
-                        car.getId(),
-                        car.getCarName(),
-                        car.getCarModel(),
-                        car.getCarDescription(),
-                        car.getCarPrice(),
-                        car.isCarAvailable()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(carResponses);
-    }
 
     @GetMapping("/")
     public ResponseEntity<Page<CarResponse>> findByCriteria(
-            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String brand,
             @RequestParam(required = false) String model,
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Integer year,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Car> cars = servicePort.findByCriteria(name, model, minPrice, maxPrice, pageable);
+        Page<Car> cars = servicePort.findByCriteria(brand, model, year, pageable);
 
-        Page<CarResponse> carResponses = cars.map(car -> new CarResponse(
-                car.getId(),
-                car.getCarName(),
-                car.getCarModel(),
-                car.getCarDescription(),
-                car.getCarPrice(),
-                car.isCarAvailable()));
+        Page<CarResponse> carResponses = cars.map(CarResponse::new);
 
         return ResponseEntity.ok(carResponses);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CarResponse> getCarById(@PathVariable Long id) {
-        Optional<Car> car = servicePort.getCarById(id);
-        return car.map(value -> ResponseEntity.ok(new CarResponse(
-                        value.getId(),
-                        value.getCarName(),
-                        value.getCarModel(),
-                        value.getCarDescription(),
-                        value.getCarPrice(),
-                        value.isCarAvailable())))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return servicePort.getCarById(id)
+                .map(car -> ResponseEntity.ok(new CarResponse(car)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
 
     @PutMapping("/{id}")
     public ResponseEntity<CarResponse> updateCar(@PathVariable Long id, @RequestBody CarRequest carRequest) {
-
         Car car = new Car(
                 id,
-                carRequest.getCarName(),
+                carRequest.getCarBrand(),
                 carRequest.getCarModel(),
-                carRequest.getCarDescription(),
-                carRequest.getCarPrice(),
-                carRequest.isCarAvailable()
+                carRequest.getCarYear(),
+                carRequest.getCarDescription()
         );
 
-
-        return servicePort.updateCar(id, car).map(updatedCar ->
-                        new CarResponse(
-                                updatedCar.getId(),
-                                updatedCar.getCarName(),
-                                updatedCar.getCarModel(),
-                                updatedCar.getCarDescription(),
-                                updatedCar.getCarPrice(),
-                                updatedCar.isCarAvailable()
-                        )
-                ).map(ResponseEntity::ok)
+        return servicePort.updateCar(id, car)
+                .map(updatedCar -> ResponseEntity.ok(new CarResponse(updatedCar)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteCarsByIds(@RequestBody List<Long> ids) {
+        boolean deleted = servicePort.deleteCarsByIds(ids);
+        if (deleted) {
+            return ResponseEntity.ok("Coches eliminados correctamente");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar los coches");
+        }
+    }
+
 
 }
 

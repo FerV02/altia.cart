@@ -1,56 +1,59 @@
 package altia.cars.demo.domain.model;
 
-import java.math.BigDecimal;
-
 public class Car {
     private Long id;
-    private String carName;
+    private String carBrand;
     private String carModel;
+    private Integer carYear;
     private String carDescription;
-    private BigDecimal carPrice;
-    private Boolean carAvailable;
 
 
-    public Car(Long id, String carName, String carModel, String carDescription, BigDecimal carPrice, Boolean carAvailable) {
+    public Car(Long id, String carBrand, String carModel, Integer carYear, String carDescription) {
         this.id = id;
-        this.carName = carName;
+        this.carBrand = carBrand;
         this.carModel = carModel;
+        this.carYear = carYear;
         this.carDescription = carDescription;
-        this.carPrice = carPrice;
-        this.carAvailable = carAvailable;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getCarName() {
-        return carName;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCarBrand() {
+        return carBrand;
+    }
+
+    public void setCarBrand(String carBrand) {
+        this.carBrand = carBrand;
     }
 
     public String getCarModel() {
         return carModel;
     }
 
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public Integer getCarYear() {
+        return carYear;
+    }
+
+    public void setCarYear(Integer carYear) {
+        this.carYear = carYear;
+    }
+
     public String getCarDescription() {
         return carDescription;
     }
 
-    public BigDecimal getCarPrice() {
-        return carPrice;
+    public void setCarDescription(String carDescription) {
+        this.carDescription = carDescription;
     }
-
-    public Boolean isCarAvailable() {
-        return carAvailable;
-    }
-
-    public Boolean getCarAvailable() {
-        return carAvailable;
-    }
-
-    public void setCarAvailable(Boolean carAvailable) {
-        this.carAvailable = carAvailable;
-    }
-
 }
 
